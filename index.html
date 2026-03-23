@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Spark</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════
+       APP HEADER
+       ══════════════════════════════════════════════════════ -->
+  <header class="app-header" role="banner">
+    <div class="app-header__brand">
+      <div class="app-header__logo" aria-hidden="true">SS</div>
+      <div>
+        <div class="app-header__title">Sales Spark</div>
+        <div class="app-header__subtitle">Target Configuration Dashboard</div>
+      </div>
+    </div>
+
+    <!-- Current fiscal quarter — always derived from today's date via JS -->
+    <div class="quarter-badge" title="Current Fiscal Quarter">
+      <div class="quarter-badge__label">
+        <span class="quarter-badge__q" id="currentQuarterBadge">—</span>
+        <span class="quarter-badge__tag">Current Quarter</span>
+      </div>
+      <div class="quarter-badge__sub" id="currentQuarterSub"></div>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════
+       MAIN LAYOUT
+       ══════════════════════════════════════════════════════ -->
+  <main class="app-layout" role="main">
+
+    <!-- ── Filters panel ──────────────────────────────────── -->
+    <section class="filter-panel" aria-label="Filters">
+      <div class="filter-panel__header">
+        <span class="filter-panel__title">Filters</span>
+        <button
+          class="filter-toggle-btn"
+          id="filterToggleBtn"
+          type="button"
+          aria-expanded="true"
+          aria-controls="filterBody"
+          title="Toggle filter panel"
+        >
+          <span class="toggle-icon">▾</span>
+          <span>Collapse</span>
+        </button>
+      </div>
+
+      <div class="filter-panel__body" id="filterBody">
+        <div class="filter-grid">
+
+          <!-- Year -->
+          <div class="filter-group">
+            <label class="filter-label" for="yearSelect">Year</label>
+            <select class="filter-select" id="yearSelect" name="year">
+              <!-- Populated by app.js -->
+            </select>
+          </div>
+
+          <!-- Quarter -->
+          <div class="filter-group">
+            <label class="filter-label" for="quarterSelect">Quarter</label>
+            <select class="filter-select" id="quarterSelect" name="quarter">
+              <!-- Populated by app.js -->
+            </select>
+          </div>
+
+          <!-- Region -->
+          <div class="filter-group">
+            <label class="filter-label" for="regionSelect">Region</label>
+            <select class="filter-select" id="regionSelect" name="region">
+              <!-- Populated by app.js -->
+            </select>
+          </div>
+
+          <!-- State (dependent on Region) -->
+          <div class="filter-group">
+            <label class="filter-label" for="stateSelect">State / Territory</label>
+            <select
+              class="filter-select"
+              id="stateSelect"
+              name="state"
+              disabled
+              aria-describedby="stateHint"
+            >
+              <option value="" disabled selected>Select State</option>
+            </select>
+          </div>
+
+          <!-- BU -->
+          <div class="filter-group filter-group--bu">
+            <label class="filter-label" for="buSelect">Business Unit (BU)</label>
+            <select class="filter-select" id="buSelect" name="bu">
+              <!-- Populated by app.js -->
+            </select>
+          </div>
+
+          <!-- Service multi-select -->
+          <div class="filter-group filter-group--service">
+            <div class="service-header-row">
+              <label class="filter-label">Services</label>
+              <span class="service-count" id="serviceCount"></span>
+            </div>
+            <div class="service-wrap">
+              <div class="service-list-scroll" role="group" aria-label="Service selection">
+                <ul id="serviceList">
+                  <!-- Populated by app.js when BU is selected -->
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /filter-grid -->
+
+        <!-- Actions row -->
+        <div class="filter-actions">
+          <button class="btn btn--ghost" id="resetFiltersBtn" type="button">
+            ↺ Reset
+          </button>
+          <button class="btn btn--primary" id="applyFiltersBtn" type="button">
+            Apply Filters
+          </button>
+        </div>
+      </div><!-- /filter-panel__body -->
+    </section>
+
+    <!-- ── Main content placeholder ───────────────────────── -->
+    <section class="main-content" aria-label="Main content">
+      <div class="content-header">
+        <span class="content-header__title">Overview</span>
+      </div>
+      <div class="content-body" id="contentPlaceholder">
+        <!-- Populated by renderDefaultPlaceholder() in app.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════
+       FOOTER
+       ══════════════════════════════════════════════════════ -->
+  <footer class="app-footer" role="contentinfo">
+    Sales Spark &copy; <span id="footerYear"></span> &middot; Internal Use Only
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    // Inline footer year (tiny, no reason to add to app.js)
+    document.getElementById('footerYear').textContent =
+      new Date().getFullYear();
+  </script>
+</body>
+</html>
