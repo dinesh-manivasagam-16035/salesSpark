@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Spark — Revenue Intelligence Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══ Global Header ════════════════════════════════════════ -->
+  <header class="app-header">
+    <a class="app-logo" href="#">
+      <div class="app-logo-icon">SS</div>
+      <span class="app-name">Sales<span>Spark</span></span>
+    </a>
+
+    <div class="header-spacer"></div>
+
+    <!-- Q1–Q4 toggles always visible -->
+    <div class="header-q-bar" role="group" aria-label="Quarter filter">
+      <button class="q-toggle" data-q="Q1">Q1</button>
+      <button class="q-toggle" data-q="Q2">Q2</button>
+      <button class="q-toggle" data-q="Q3">Q3</button>
+      <button class="q-toggle" data-q="Q4">Q4</button>
+    </div>
+
+    <!-- Year selector -->
+    <select class="year-select" id="year-select" aria-label="Fiscal year">
+      <option value="2022">FY 2022</option>
+      <option value="2023">FY 2023</option>
+      <option value="2024">FY 2024</option>
+      <option value="2025" selected>FY 2025</option>
+    </select>
+
+    <!-- Settings / Profile -->
+    <button class="settings-btn" id="settings-btn" aria-label="Settings">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- ═══ Navigation ═══════════════════════════════════════════ -->
+  <nav class="app-nav" role="navigation" aria-label="Main navigation">
+    <button class="nav-item active" data-tab="dashboard">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-item" data-tab="organization">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Organization
+    </button>
+    <button class="nav-item" data-tab="leaderboard">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      Leaderboard
+    </button>
+    <button class="nav-item" data-tab="analytics">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Analytics
+    </button>
+    <button class="nav-item" data-tab="configuration">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Configuration
+    </button>
+    <button class="nav-item" data-tab="livefeed">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+      Live Feed
+      <span class="nav-dot" id="feed-dot"></span>
+    </button>
+  </nav>
+
+  <!-- ═══ Main Content ══════════════════════════════════════════ -->
+  <main class="app-content">
+
+    <!-- Dashboard -->
+    <div class="tab-pane active" id="tab-dashboard">
+      <!-- Populated by app.js -->
+    </div>
+
+    <!-- Organization -->
+    <div class="tab-pane" id="tab-organization">
+      <!-- Populated by app.js -->
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="tab-pane" id="tab-leaderboard">
+      <!-- Populated by app.js -->
+    </div>
+
+    <!-- Analytics -->
+    <div class="tab-pane" id="tab-analytics">
+      <!-- Populated by app.js -->
+    </div>
+
+    <!-- Configuration -->
+    <div class="tab-pane" id="tab-configuration">
+      <!-- Populated by app.js -->
+    </div>
+
+    <!-- Live Feed -->
+    <div class="tab-pane" id="tab-livefeed">
+      <!-- Populated by app.js -->
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══ Settings Modal ════════════════════════════════════════ -->
+<div class="modal-overlay" id="settings-modal" role="dialog" aria-modal="true" aria-label="Settings">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">Profile & Settings</span>
+      <button class="modal-close" id="settings-close" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="profile-row">
+        <div class="profile-avatar">PB</div>
+        <div>
+          <div class="profile-name">Peter Balaji</div>
+          <div class="profile-role">Director of Sales · India North</div>
+        </div>
+      </div>
+      <ul class="settings-list">
+        <li><span>👤</span> My Profile</li>
+        <li><span>🔔</span> Notifications</li>
+        <li><span>🎯</span> Target Preferences</li>
+        <li><span>📊</span> Data Export</li>
+        <li><span>🌐</span> Region & Locale</li>
+        <li><span>🔑</span> API Access</li>
+        <li><span>🚪</span> Sign Out</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts (order matters) -->
+<script src="js/data.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
