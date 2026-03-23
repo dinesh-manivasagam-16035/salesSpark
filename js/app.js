@@ -289,13 +289,13 @@ const App = (() => {
       <div class="chart-card"><h3>Win Rate by Region</h3><canvas id="chartWinRate"></canvas></div>
       <div class="chart-card"><h3>BU Performance</h3><canvas id="chartBU"></canvas></div>`;
 
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       drawBarChart("chartRegion", Object.keys(DATA.regionRevenue), Object.values(DATA.regionRevenue).map(r => r.achieved), Object.values(DATA.regionRevenue).map(r => r.target));
       drawLineChart("chartTrend", DATA.quarters, DATA.quarters.map(q => DATA.financialData[state.year][q].achievedRevenue), DATA.quarters.map(q => DATA.financialData[state.year][q].targetRevenue));
       drawHBarChart("chartWinRate", Object.keys(DATA.regionRevenue).slice(0, 8), Object.keys(DATA.regionRevenue).slice(0, 8).map((_, i) => 25 + (i * 7 + 3) % 30));
       const buKeys = Object.keys(DATA.buPerformance).slice(0, 8);
       drawBarChart("chartBU", buKeys.map(k => k.length > 12 ? k.slice(0, 12) + "…" : k), buKeys.map(k => DATA.buPerformance[k].revenue), null);
-    }, 50);
+    });
   }
 
   function drawBarChart(canvasId, labels, values, values2) {
@@ -616,7 +616,7 @@ const App = (() => {
 
   function renderConfigReporting() {
     const managers = DATA.flattenOrg(DATA.orgHierarchy).filter(n => n.children && n.children.length > 0);
-    const options = managers.map(m => `<option value="${m.id}" ${m.id === (state.configPerson.reportsTo === m.name ? m.id : '') ? 'selected' : ''}>${m.name} (${m.role})</option>`).join("");
+    const options = managers.map(m => `<option value="${m.id}" ${state.configPerson.reportsTo === m.name ? 'selected' : ''}>${m.name} (${m.role})</option>`).join("");
     document.getElementById("configReporting").innerHTML = `
       <div class="config-section">
         <h3>
@@ -848,8 +848,8 @@ const App = (() => {
       /* Save target */
       if (e.target.closest("#saveTargetBtn")) {
         const input = document.getElementById("targetAmountInput");
-        const raw = input.value.replace(/[^0-9.]/g, "");
-        const amt = parseFloat(raw);
+        const raw = input.value.replace(/[^0-9]/g, "");
+        const amt = parseInt(raw, 10);
         if (isNaN(amt) || amt <= 0) { showToast("Enter a valid amount", "error"); return; }
         const key = `${state.configPerson.id}_${state.configQuarter}_${state.configTargetType}`;
         state.targetAmounts[key] = amt;
@@ -879,7 +879,7 @@ const App = (() => {
     document.addEventListener("input", e => {
       if (e.target.id === "targetAmountInput") {
         let val = e.target.value.replace(/[^0-9]/g, "");
-        if (val) e.target.value = parseInt(val).toLocaleString();
+        if (val) e.target.value = parseInt(val, 10).toLocaleString();
       }
     });
   }

@@ -228,7 +228,7 @@ const DATA = (() => {
     const atRisk = 3 + (seed % 5);
     const churnRate = 3.2 + (seed % 7) * 0.4;
     const renewalRate = 100 - churnRate - (seed % 3) * 0.5;
-    return { year, quarter, targetRevenue: base, achievedRevenue: achieved, pipeline, winRate, atRiskDeals: atRisk, churnRate: +churnRate.toFixed(1), renewalRate: +renewalRate.toFixed(1) };
+    return { year, quarter, targetRevenue: base, achievedRevenue: achieved, pipeline, winRate, atRiskDeals: atRisk, churnRate: parseFloat(churnRate.toFixed(1)), renewalRate: parseFloat(renewalRate.toFixed(1)) };
   }
 
   const financialData = {};
@@ -294,13 +294,17 @@ const DATA = (() => {
   ];
 
   /* ---------- Helpers ---------- */
+  /* Fiscal year runs April–March (e.g. FY25 = Apr 2024 – Mar 2025).
+     Q1 = Apr–Jun, Q2 = Jul–Sep, Q3 = Oct–Dec, Q4 = Jan–Mar. */
   function getCurrentFiscalQuarter() {
     const now = new Date();
-    const month = now.getMonth();
-    if (month < 3) return { year: now.getFullYear(), quarter: "Q4", fiscalYear: now.getFullYear() - 1 };
-    if (month < 6) return { year: now.getFullYear(), quarter: "Q1", fiscalYear: now.getFullYear() };
-    if (month < 9) return { year: now.getFullYear(), quarter: "Q2", fiscalYear: now.getFullYear() };
-    return { year: now.getFullYear(), quarter: "Q3", fiscalYear: now.getFullYear() };
+    const month = now.getMonth(); // 0-indexed
+    const calYear = now.getFullYear();
+    if (month >= 3 && month <= 5) return { year: calYear, quarter: "Q1", fiscalYear: calYear };
+    if (month >= 6 && month <= 8) return { year: calYear, quarter: "Q2", fiscalYear: calYear };
+    if (month >= 9 && month <= 11) return { year: calYear, quarter: "Q3", fiscalYear: calYear };
+    // Jan–Mar: still part of the fiscal year that started the previous April
+    return { year: calYear, quarter: "Q4", fiscalYear: calYear - 1 };
   }
 
   function formatCurrency(n) {
